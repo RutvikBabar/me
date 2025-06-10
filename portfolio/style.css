@@ -1,0 +1,565 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+Devanagari:wght@400;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', monospace;
+    background-color: #0E0813;
+    color: #DAD8CA;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.container {
+    min-height: 100vh;
+    padding: 3rem 4rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fixed Vertical Devanagari Name */
+.vertical-name {
+    position: fixed;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Noto Sans Devanagari', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: rgba(218, 216, 202, 0.8);
+    z-index: 2;
+    transition: all 0.3s ease;
+    display: block;
+    line-height: 4rem;
+}
+
+.char {
+    display: block;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.vertical-name:hover {
+    color: #DAD8CA;
+    text-shadow: 0 0 20px rgba(218, 216, 202, 0.5);
+}
+
+header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin-bottom: 4rem;
+    position: relative;
+}
+
+.header-line {
+    position: absolute;
+    top: -1rem;
+    left: auto;
+    right: 0;
+    width: calc(100% - 180px);
+    height: 2px;
+    background-color: #DAD8CA;
+}
+
+.name-display {
+    font-size: 5rem;
+    font-weight: 900;
+    color: #DAD8CA;
+    letter-spacing: 0.3em;
+    text-align: right;
+    line-height: 0.9;
+    position: relative;
+}
+
+.portfolio-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-stripe {
+    position: relative;
+    width: 95vw;
+    height: 80vh; /* Increased from 70vh */
+    max-width: 1600px;
+    min-height: 700px; /* Increased from 600px */
+    background-image: 
+        repeating-linear-gradient(
+            -45deg,
+            #DAD8CA 0px,
+            #DAD8CA 100px,
+            transparent 100px,
+            transparent 200px
+        );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-right: -10vw; /* Extend stripes to the RIGHT */
+}
+
+
+.projects-container {
+    position: relative;
+    z-index: 3;
+    background: rgba(14, 8, 19, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 2.5rem; /* Increased padding */
+    border: 2px solid rgba(218, 216, 202, 0.2);
+    width: 90%; /* Increased from 85% */
+    height: 95%; /* Increased from 85% */
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5vw; /* Offset container back to center */
+    min-height: 600px; /* Added minimum height */
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2rem; /* Increased gap */
+    width: 100%;
+    height: 100%;
+}
+
+.project-card {
+    background: rgba(218, 216, 202, 0.05);
+    border: 1px solid rgba(218, 216, 202, 0.1);
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px; /* Increased minimum height */
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(218, 216, 202, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.project-card:hover::before {
+    left: 100%;
+}
+
+.project-card:hover {
+    background: rgba(218, 216, 202, 0.08);
+    border-color: rgba(218, 216, 202, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.project-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.project-number {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #888;
+    margin-bottom: 1rem;
+    letter-spacing: 0.2em;
+}
+
+.project-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #DAD8CA;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+}
+
+.project-description {
+    font-size: 1rem;
+    color: #ccc;
+    line-height: 1.4;
+    margin-bottom: 2rem;
+    letter-spacing: 0.02em;
+    flex-grow: 1;
+}
+
+.project-button {
+    display: inline-block;
+    padding: 1rem 1.8rem;
+    background: transparent;
+    color: #DAD8CA;
+    text-decoration: none;
+    border: 2px solid #DAD8CA;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    position: relative;
+    overflow: hidden;
+    align-self: flex-start;
+    margin-top: auto;
+}
+
+.project-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #DAD8CA;
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+.project-button:hover::before {
+    left: 0;
+}
+
+.project-button:hover {
+    color: #0E0813;
+    transform: translateY(-2px);
+}
+
+/* Technical grid overlay */
+.container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(218, 216, 202, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(218, 216, 202, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Random geometric background elements */
+.geometric-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.geometric-element {
+    position: absolute;
+    opacity: 0.3;
+    animation: float 8s ease-in-out infinite;
+}
+
+.geometric-square {
+    width: 8px;
+    height: 8px;
+    background: rgba(218, 216, 202, 0.4);
+    transform: rotate(45deg);
+}
+
+.geometric-square.small {
+    width: 4px;
+    height: 4px;
+    opacity: 0.2;
+}
+
+.geometric-square.large {
+    width: 12px;
+    height: 12px;
+    opacity: 0.5;
+}
+
+.geometric-line {
+    height: 1px;
+    background: rgba(218, 216, 202, 0.3);
+    transform-origin: left center;
+}
+
+.geometric-line.short {
+    width: 20px;
+}
+
+.geometric-line.medium {
+    width: 40px;
+}
+
+.geometric-line.long {
+    width: 60px;
+}
+
+.geometric-triangle {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 8px solid rgba(218, 216, 202, 0.3);
+}
+
+/* Floating animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-10px) rotate(90deg);
+    }
+    50% {
+        transform: translateY(-5px) rotate(180deg);
+    }
+    75% {
+        transform: translateY(-15px) rotate(270deg);
+    }
+}
+
+@keyframes drift {
+    0% {
+        transform: translateX(0px);
+    }
+    50% {
+        transform: translateX(20px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* Different animation delays and durations */
+.geometric-element:nth-child(odd) {
+    animation-delay: -2s;
+    animation-duration: 10s;
+}
+
+.geometric-element:nth-child(even) {
+    animation-delay: -4s;
+    animation-duration: 12s;
+}
+
+.geometric-element:nth-child(3n) {
+    animation-name: drift;
+    animation-duration: 15s;
+}
+
+.geometric-element:nth-child(5n) {
+    animation-name: pulse;
+    animation-duration: 6s;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .container {
+        padding: 2rem 3rem;
+    }
+    
+    .name-display {
+        font-size: 4rem;
+        letter-spacing: 0.2em;
+    }
+    
+    .header-line {
+        width: calc(100% - 140px);
+    }
+    
+    .vertical-name {
+        font-size: 3rem;
+        left: 1.5rem;
+        line-height: 3.5rem;
+    }
+    
+    .main-stripe {
+        width: 90vw;
+        height: 75vh;
+        min-height: 650px;
+        background-image: 
+            repeating-linear-gradient(
+                -45deg,
+                #DAD8CA 0px,
+                #DAD8CA 80px,
+                transparent 80px,
+                transparent 160px
+            );
+        margin-right: -8vw;
+    }
+    
+    .projects-container {
+        margin-right: 4vw;
+        height: 92%;
+        min-height: 550px;
+    }
+}
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem 2rem;
+    }
+    
+    .name-display {
+        font-size: 3rem;
+        letter-spacing: 0.15em;
+    }
+    
+    .header-line {
+        width: calc(100% - 100px);
+    }
+    
+    .vertical-name {
+        font-size: 2.5rem;
+        left: 1rem;
+        line-height: 3rem;
+    }
+    
+    .main-stripe {
+        width: 95vw;
+        height: 85vh;
+        min-height: 600px;
+        background-image: 
+            repeating-linear-gradient(
+                -45deg,
+                #DAD8CA 0px,
+                #DAD8CA 60px,
+                transparent 60px,
+                transparent 120px
+            );
+        margin-right: -5vw;
+    }
+    
+    .projects-container {
+        margin-right: 2vw;
+        padding: 2rem;
+        height: 90%;
+        min-height: 500px;
+    }
+    
+    .projects-grid {
+        gap: 1.2rem;
+    }
+    
+    .project-card {
+        padding: 1.5rem;
+        min-height: 240px;
+    }
+    
+    .project-title {
+        font-size: 1.3rem;
+    }
+    
+    .project-description {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-stripe {
+        width: 98vw;
+        height: 90vh;
+        margin-right: -3vw;
+        min-height: 550px;
+    }
+    
+    .projects-container {
+        padding: 1.5rem;
+        width: 92%;
+        height: 92%;
+        margin-right: 1vw;
+        min-height: 480px;
+    }
+    .projects-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 1fr);
+        gap: 1.2rem;
+    }
+    
+    .project-card {
+        padding: 1.2rem;
+        min-height: 200px;
+    }
+    
+    .name-display {
+        font-size: 2.5rem;
+        letter-spacing: 0.1em;
+    }
+    
+    .header-line {
+        width: calc(100% - 80px);
+    }
+    
+    .vertical-name {
+        font-size: 2rem;
+        left: 0.5rem;
+        line-height: 2.5rem;
+    }
+}
+
+/* Animation for loading */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.main-stripe {
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+.project-card {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.project-card:nth-child(1) { animation-delay: 0.1s; }
+.project-card:nth-child(2) { animation-delay: 0.2s; }
+.project-card:nth-child(3) { animation-delay: 0.3s; }
+.project-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Vertical name animation */
+.vertical-name {
+    animation: fadeInLeft 1.2s ease-out forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-20px);
+    }
+    to {
+        opacity: 0.8;
+        transform: translateY(-50%) translateX(0);
+    }
+}
