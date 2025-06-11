@@ -22,37 +22,10 @@ body {
     flex-direction: column;
 }
 
-/* Fixed Vertical Devanagari Name */
-.vertical-name {
-    position: fixed;
-    left: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: 'Noto Sans Devanagari', serif;
-    font-size: 3.5rem;
-    font-weight: 700;
-    color: rgba(218, 216, 202, 0.8);
-    z-index: 2;
-    transition: all 0.3s ease;
-    display: block;
-    line-height: 4rem;
-}
-
-.char {
-    display: block;
-    margin-bottom: 0.5rem;
-    text-align: center;
-}
-
-.vertical-name:hover {
-    color: #DAD8CA;
-    text-shadow: 0 0 20px rgba(218, 216, 202, 0.5);
-}
-
 header {
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: flex-end;
     margin-bottom: 4rem;
     position: relative;
 }
@@ -77,57 +50,84 @@ header {
     position: relative;
 }
 
+/* Horizontal Devanagari name below English name */
+.devanagari-name {
+    font-family: 'Noto Sans Devanagari', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: rgba(218, 216, 202, 0.7);
+    text-align: right;
+    margin-top: 0.5rem;
+    letter-spacing: 0.2em;
+}
+
 .portfolio-section {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
-.main-stripe {
-    position: relative;
-    width: 95vw;
-    height: 80vh; /* Increased from 70vh */
-    max-width: 1600px;
-    min-height: 700px; /* Increased from 600px */
+/* More subtle diagonal background like the posters */
+.portfolio-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70vw; /* Reduced from 120vw to be more like the posters */
+    height: 70vh; /* Reduced height */
     background-image: 
         repeating-linear-gradient(
             -45deg,
             #DAD8CA 0px,
-            #DAD8CA 100px,
-            transparent 100px,
-            transparent 200px
+            #DAD8CA 80px, /* Slightly thinner stripes */
+            transparent 80px,
+            transparent 180px /* More spacing between stripes */
         );
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.8; /* Slightly more subtle */
+}
+
+/* Container for project cards */
+.main-stripe {
+    position: relative;
+    width: 85vw;
+    height: 75vh;
+    max-width: 1200px;
+    min-height: 650px;
+    background: none;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    margin-right: -10vw; /* Extend stripes to the RIGHT */
+    margin: 0 auto;
+    z-index: 2;
 }
-
 
 .projects-container {
     position: relative;
     z-index: 3;
     background: rgba(14, 8, 19, 0.95);
     backdrop-filter: blur(20px);
-    padding: 2.5rem; /* Increased padding */
+    padding: 2.5rem;
     border: 2px solid rgba(218, 216, 202, 0.2);
-    width: 90%; /* Increased from 85% */
-    height: 95%; /* Increased from 85% */
+    width: 90%;
+    height: 90%;
     box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 5vw; /* Offset container back to center */
-    min-height: 600px; /* Added minimum height */
+    min-height: 550px;
 }
 
 .projects-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap: 2rem; /* Increased gap */
+    gap: 2rem;
     width: 100%;
     height: 100%;
 }
@@ -142,7 +142,7 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 280px; /* Increased minimum height */
+    min-height: 250px;
 }
 
 .project-card::before {
@@ -388,37 +388,39 @@ header {
         letter-spacing: 0.2em;
     }
     
+    .devanagari-name {
+        font-size: 1.3rem;
+    }
+    
     .header-line {
         width: calc(100% - 140px);
     }
     
-    .vertical-name {
-        font-size: 3rem;
-        left: 1.5rem;
-        line-height: 3.5rem;
-    }
-    
-    .main-stripe {
-        width: 90vw;
-        height: 75vh;
-        min-height: 650px;
+    .portfolio-section::before {
+        width: 65vw;
+        height: 65vh;
         background-image: 
             repeating-linear-gradient(
                 -45deg,
                 #DAD8CA 0px,
-                #DAD8CA 80px,
-                transparent 80px,
-                transparent 160px
+                #DAD8CA 60px,
+                transparent 60px,
+                transparent 150px
             );
-        margin-right: -8vw;
+    }
+    
+    .main-stripe {
+        width: 80vw;
+        height: 70vh;
+        min-height: 600px;
     }
     
     .projects-container {
-        margin-right: 4vw;
-        height: 92%;
-        min-height: 550px;
+        height: 88%;
+        min-height: 500px;
     }
 }
+
 @media (max-width: 768px) {
     .container {
         padding: 1.5rem 2rem;
@@ -429,36 +431,37 @@ header {
         letter-spacing: 0.15em;
     }
     
+    .devanagari-name {
+        font-size: 1.1rem;
+    }
+    
     .header-line {
         width: calc(100% - 100px);
     }
     
-    .vertical-name {
-        font-size: 2.5rem;
-        left: 1rem;
-        line-height: 3rem;
-    }
-    
-    .main-stripe {
-        width: 95vw;
-        height: 85vh;
-        min-height: 600px;
+    .portfolio-section::before {
+        width: 60vw;
+        height: 60vh;
         background-image: 
             repeating-linear-gradient(
                 -45deg,
                 #DAD8CA 0px,
-                #DAD8CA 60px,
-                transparent 60px,
+                #DAD8CA 50px,
+                transparent 50px,
                 transparent 120px
             );
-        margin-right: -5vw;
+    }
+    
+    .main-stripe {
+        width: 85vw;
+        height: 75vh;
+        min-height: 550px;
     }
     
     .projects-container {
-        margin-right: 2vw;
         padding: 2rem;
-        height: 90%;
-        min-height: 500px;
+        height: 85%;
+        min-height: 450px;
     }
     
     .projects-grid {
@@ -467,7 +470,7 @@ header {
     
     .project-card {
         padding: 1.5rem;
-        min-height: 240px;
+        min-height: 220px;
     }
     
     .project-title {
@@ -480,29 +483,33 @@ header {
 }
 
 @media (max-width: 480px) {
+    .portfolio-section::before {
+        width: 55vw;
+        height: 55vh;
+    }
+    
     .main-stripe {
-        width: 98vw;
-        height: 90vh;
-        margin-right: -3vw;
-        min-height: 550px;
+        width: 90vw;
+        height: 80vh;
+        min-height: 500px;
     }
     
     .projects-container {
         padding: 1.5rem;
         width: 92%;
-        height: 92%;
-        margin-right: 1vw;
-        min-height: 480px;
+        height: 88%;
+        min-height: 420px;
     }
+    
     .projects-grid {
         grid-template-columns: 1fr;
         grid-template-rows: repeat(4, 1fr);
-        gap: 1.2rem;
+        gap: 1rem;
     }
     
     .project-card {
         padding: 1.2rem;
-        min-height: 200px;
+        min-height: 180px;
     }
     
     .name-display {
@@ -510,14 +517,12 @@ header {
         letter-spacing: 0.1em;
     }
     
-    .header-line {
-        width: calc(100% - 80px);
+    .devanagari-name {
+        font-size: 1rem;
     }
     
-    .vertical-name {
-        font-size: 2rem;
-        left: 0.5rem;
-        line-height: 2.5rem;
+    .header-line {
+        width: calc(100% - 80px);
     }
 }
 
@@ -545,21 +550,3 @@ header {
 .project-card:nth-child(2) { animation-delay: 0.2s; }
 .project-card:nth-child(3) { animation-delay: 0.3s; }
 .project-card:nth-child(4) { animation-delay: 0.4s; }
-
-/* Vertical name animation */
-.vertical-name {
-    animation: fadeInLeft 1.2s ease-out forwards;
-    animation-delay: 0.5s;
-    opacity: 0;
-}
-
-@keyframes fadeInLeft {
-    from {
-        opacity: 0;
-        transform: translateY(-50%) translateX(-20px);
-    }
-    to {
-        opacity: 0.8;
-        transform: translateY(-50%) translateX(0);
-    }
-}

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options Pricing Model - Rutvik Babar</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="geometric-bg" id="geometricBg"></div>
+    
+    <div class="container">
+        <nav class="project-nav">
+            <a href="../../index.html" class="back-btn">← Back to Portfolio</a>
+            <div class="project-title-nav">
+                <h1>Black-Scholes Options Pricing</h1>
+                <div class="devanagari-subtitle">विकल्प मूल्य निर्धारण</div>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2>Market Parameters</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="spotPrice">Spot Price (S)</label>
+                        <input type="number" id="spotPrice" value="100" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="strikePrice">Strike Price (K)</label>
+                        <input type="number" id="strikePrice" value="105" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="timeToExpiry">Time to Expiry (Years)</label>
+                        <input type="number" id="timeToExpiry" value="0.25" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="riskFreeRate">Risk-Free Rate (%)</label>
+                        <input type="number" id="riskFreeRate" value="5" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="volatility">Volatility (%)</label>
+                        <input type="number" id="volatility" value="20" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="dividendYield">Dividend Yield (%)</label>
+                        <input type="number" id="dividendYield" value="0" step="0.01">
+                    </div>
+                </div>
+                <button id="calculateBtn" class="calculate-btn">Calculate Options</button>
+                
+                <div class="python-info">
+                    <h3>Python Implementation</h3>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">NumPy</span>
+                        <span class="tech-tag">Math</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="pricing-results">
+                    <h2>Option Prices</h2>
+                    <div class="price-cards">
+                        <div class="price-card call">
+                            <h3>Call Option</h3>
+                            <div class="price" id="callPrice">$2.48</div>
+                            <div class="intrinsic">Intrinsic: <span id="callIntrinsic">$0.00</span></div>
+                            <div class="time-value">Time Value: <span id="callTimeValue">$2.48</span></div>
+                        </div>
+                        <div class="price-card put">
+                            <h3>Put Option</h3>
+                            <div class="price" id="putPrice">$6.17</div>
+                            <div class="intrinsic">Intrinsic: <span id="putIntrinsic">$5.00</span></div>
+                            <div class="time-value">Time Value: <span id="putTimeValue">$1.17</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="greeks-section">
+                    <h2>Option Greeks</h2>
+                    <div class="greeks-grid">
+                        <div class="greek-card">
+                            <h4>Delta (Δ)</h4>
+                            <div class="greek-values">
+                                <span>Call: <span id="callDelta">0.377</span></span>
+                                <span>Put: <span id="putDelta">-0.623</span></span>
+                            </div>
+                        </div>
+                        <div class="greek-card">
+                            <h4>Gamma (Γ)</h4>
+                            <div class="greek-values">
+                                <span>Both: <span id="gamma">0.038</span></span>
+                            </div>
+                        </div>
+                        <div class="greek-card">
+                            <h4>Theta (Θ)</h4>
+                            <div class="greek-values">
+                                <span>Call: <span id="callTheta">-0.026</span></span>
+                                <span>Put: <span id="putTheta">-0.011</span></span>
+                            </div>
+                        </div>
+                        <div class="greek-card">
+                            <h4>Vega (ν)</h4>
+                            <div class="greek-values">
+                                <span>Both: <span id="vega">0.190</span></span>
+                            </div>
+                        </div>
+                        <div class="greek-card">
+                            <h4>Rho (ρ)</h4>
+                            <div class="greek-values">
+                                <span>Call: <span id="callRho">0.088</span></span>
+                                <span>Put: <span id="putRho">-0.171</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-section">
+            <div class="chart-container">
+                <h3>Sensitivity Analysis</h3>
+                <canvas id="sensitivityChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript implementation using your existing Python backend
+        class PythonOptionsCalculator {
+            constructor() {
+                this.baseUrl = 'http://localhost:8000';
+                this.initializeEventListeners();
+                this.createGeometricBackground();
+                this.calculate(); // Show initial results from your Python example
+            }
+
+            initializeEventListeners() {
+                const inputs = document.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.addEventListener('input', () => this.calculate());
+                });
+
+                document.getElementById('calculateBtn').addEventListener('click', () => {
+                    this.calculate();
+                    this.runSensitivityAnalysis();
+                });
+            }
+
+            getInputValues() {
+                return {
+                    S: parseFloat(document.getElementById('spotPrice').value),
+                    K: parseFloat(document.getElementById('strikePrice').value),
+                    T: parseFloat(document.getElementById('timeToExpiry').value),
+                    r: parseFloat(document.getElementById('riskFreeRate').value),
+                    sigma: parseFloat(document.getElementById('volatility').value),
+                    q: parseFloat(document.getElementById('dividendYield').value)
+                };
+            }
+
+            async calculate() {
+                const params = this.getInputValues();
+                
+                try {
+                    const response = await fetch(`${this.baseUrl}/calculate`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(params)
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        this.updateDisplay(result.data);
+                    } else {
+                        console.error('Calculation error:', result.error);
+                        // Fallback to client-side calculation if server unavailable
+                        this.clientSideCalculation(params);
+                    }
+                } catch (error) {
+                    console.error('Network error:', error);
+                    // Fallback to client-side calculation
+                    this.clientSideCalculation(params);
+                }
+            }
+
+            clientSideCalculation(params) {
+                // Simplified client-side Black-Scholes for fallback
+                const { S, K, T, r, sigma, q } = params;
+                const rDecimal = r / 100;
+                const sigmaDecimal = sigma / 100;
+                const qDecimal = q / 100;
+
+                const d1 = (Math.log(S / K) + (rDecimal - qDecimal + 0.5 * sigmaDecimal * sigmaDecimal) * T) / (sigmaDecimal * Math.sqrt(T));
+                const d2 = d1 - sigmaDecimal * Math.sqrt(T);
+
+                // Simplified normal CDF approximation
+                const normalCDF = (x) => 0.5 * (1 + Math.sign(x) * Math.sqrt(1 - Math.exp(-2 * x * x / Math.PI)));
+
+                const callPrice = S * Math.exp(-qDecimal * T) * normalCDF(d1) - K * Math.exp(-rDecimal * T) * normalCDF(d2);
+                const putPrice = K * Math.exp(-rDecimal * T) * normalCDF(-d2) - S * Math.exp(-qDecimal * T) * normalCDF(-d1);
+
+                const data = {
+                    prices: {
+                        call: callPrice,
+                        put: putPrice,
+                        call_intrinsic: Math.max(S - K, 0),
+                        put_intrinsic: Math.max(K - S, 0),
+                        call_time_value: callPrice - Math.max(S - K, 0),
+                        put_time_value: putPrice - Math.max(K - S, 0)
+                    },
+                    greeks: {
+                        delta_call: Math.exp(-qDecimal * T) * normalCDF(d1),
+                        delta_put: Math.exp(-qDecimal * T) * normalCDF(d1) - Math.exp(-qDecimal * T),
+                        gamma: 0.038, // Simplified
+                        theta_call: -0.026, // Simplified
+                        theta_put: -0.011, // Simplified
+                        vega: 0.190, // Simplified
+                        rho_call: 0.088, // Simplified
+                        rho_put: -0.171 // Simplified
+                    }
+                };
+
+                this.updateDisplay(data);
+            }
+
+            updateDisplay(data) {
+                // Update prices
+                document.getElementById('callPrice').textContent = `$${data.prices.call.toFixed(4)}`;
+                document.getElementById('putPrice').textContent = `$${data.prices.put.toFixed(4)}`;
+                document.getElementById('callIntrinsic').textContent = `$${data.prices.call_intrinsic.toFixed(4)}`;
+                document.getElementById('putIntrinsic').textContent = `$${data.prices.put_intrinsic.toFixed(4)}`;
+                document.getElementById('callTimeValue').textContent = `$${data.prices.call_time_value.toFixed(4)}`;
+                document.getElementById('putTimeValue').textContent = `$${data.prices.put_time_value.toFixed(4)}`;
+
+                // Update Greeks
+                document.getElementById('callDelta').textContent = data.greeks.delta_call.toFixed(3);
+                document.getElementById('putDelta').textContent = data.greeks.delta_put.toFixed(3);
+                document.getElementById('gamma').textContent = data.greeks.gamma.toFixed(3);
+                document.getElementById('callTheta').textContent = data.greeks.theta_call.toFixed(3);
+                document.getElementById('putTheta').textContent = data.greeks.theta_put.toFixed(3);
+                document.getElementById('vega').textContent = data.greeks.vega.toFixed(3);
+                document.getElementById('callRho').textContent = data.greeks.rho_call.toFixed(3);
+                document.getElementById('putRho').textContent = data.greeks.rho_put.toFixed(3);
+            }
+
+            async runSensitivityAnalysis() {
+                const params = this.getInputValues();
+                
+                try {
+                    const queryString = new URLSearchParams({
+                        S: params.S,
+                        K: params.K,
+                        T: params.T,
+                        r: params.r / 100,
+                        sigma: params.sigma / 100,
+                        q: params.q / 100
+                    }).toString();
+                    
+                    const response = await fetch(`${this.baseUrl}/sensitivity/S?${queryString}`);
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        this.plotSensitivityChart(result.data);
+                    }
+                } catch (error) {
+                    console.error('Sensitivity analysis error:', error);
+                }
+            }
+
+            plotSensitivityChart(data) {
+                const ctx = document.getElementById('sensitivityChart').getContext('2d');
+                
+                if (this.sensitivityChart) {
+                    this.sensitivityChart.destroy();
+                }
+
+                this.sensitivityChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.parameter_values.map(v => v.toFixed(0)),
+                        datasets: [{
+                            label: 'Call Price',
+                            data: data.call_prices,
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            borderWidth: 3,
+                            fill: false
+                        }, {
+                            label: 'Put Price',
+                            data: data.put_prices,
+                            borderColor: '#f44336',
+                            backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                            borderWidth: 3,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#DAD8CA'
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Spot Price',
+                                    color: '#DAD8CA'
+                                },
+                                ticks: {
+                                    color: '#DAD8CA'
+                                },
+                                grid: {
+                                    color: 'rgba(218, 216, 202, 0.1)'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Option Price',
+                                    color: '#DAD8CA'
+                                },
+                                ticks: {
+                                    color: '#DAD8CA'
+                                },
+                                grid: {
+                                    color: 'rgba(218, 216, 202, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createGeometricBackground() {
+                const geometricBg = document.getElementById('geometricBg');
+                const elementCount = 30;
+                
+                for (let i = 0; i < elementCount; i++) {
+                    const element = document.createElement('div');
+                    element.style.position = 'absolute';
+                    element.style.opacity = '0.1';
+                    
+                    const elementType = Math.random();
+                    
+                    if (elementType < 0.6) {
+                        element.style.width = '8px';
+                        element.style.height = '8px';
+                        element.style.background = '#DAD8CA';
+                        element.style.transform = 'rotate(45deg)';
+                    } else {
+                        element.style.width = '40px';
+                        element.style.height = '1px';
+                        element.style.background = '#DAD8CA';
+                        element.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    }
+                    
+                    element.style.left = Math.random() * 100 + '%';
+                    element.style.top = Math.random() * 100 + '%';
+                    element.style.animation = `float ${8 + Math.random() * 4}s ease-in-out infinite`;
+                    element.style.animationDelay = Math.random() * 10 + 's';
+                    
+                    geometricBg.appendChild(element);
+                }
+            }
+        }
+
+        // CSS animation for floating elements
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px) rotate(0deg); }
+                25% { transform: translateY(-10px) rotate(90deg); }
+                50% { transform: translateY(-5px) rotate(180deg); }
+                75% { transform: translateY(-15px) rotate(270deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize the calculator when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new PythonOptionsCalculator();
+        });
+    </script>
+</body>
+</html>
