@@ -1,0 +1,441 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+Devanagari:wght@400;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', monospace;
+    background: #1a1a2e;
+    color: #DAD8CA;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Matrix Background */
+.matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+}
+
+.matrix-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(218, 216, 202, 0.03) 2px,
+            rgba(218, 216, 202, 0.03) 4px
+        );
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    padding: 2rem;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+/* Header */
+.system-header {
+    margin-bottom: 3rem;
+    border-bottom: 2px solid rgba(218, 216, 202, 0.2);
+    padding-bottom: 2rem;
+}
+
+.header-grid {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 2rem;
+}
+
+.system-id {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.system-number {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #DAD8CA;
+    line-height: 1;
+}
+
+.system-code {
+    font-size: 2rem;
+    font-weight: 400;
+    color: rgba(218, 216, 202, 0.6);
+    border: 2px solid rgba(218, 216, 202, 0.3);
+    padding: 0.5rem 1rem;
+}
+
+.project-title h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #DAD8CA;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: rgba(218, 216, 202, 0.8);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.5rem;
+}
+
+.devanagari {
+    font-family: 'Noto Sans Devanagari', serif;
+    font-size: 1.2rem;
+    color: rgba(218, 216, 202, 0.6);
+}
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #4CAF50;
+    box-shadow: 0 0 10px #4CAF50;
+    animation: pulse 2s infinite;
+}
+
+.status-indicator.active {
+    background: #4CAF50;
+    box-shadow: 0 0 10px #4CAF50;
+}
+
+.status-indicator.training {
+    background: #FF9800;
+    box-shadow: 0 0 10px #FF9800;
+}
+
+.status-indicator.error {
+    background: #f44336;
+    box-shadow: 0 0 10px #f44336;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Training Section */
+.training-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.training-panel {
+    background: rgba(218, 216, 202, 0.05);
+    border: 1px solid rgba(218, 216, 202, 0.1);
+    border-radius: 8px;
+    padding: 3rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    max-width: 600px;
+    width: 100%;
+}
+
+.training-panel h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #DAD8CA;
+    margin-bottom: 2rem;
+    letter-spacing: 0.1em;
+}
+
+.training-progress {
+    margin-bottom: 2rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(218, 216, 202, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #2196F3);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.progress-text {
+    font-size: 1.1rem;
+    color: #DAD8CA;
+    font-weight: 600;
+}
+
+.training-info {
+    color: rgba(218, 216, 202, 0.8);
+    line-height: 1.6;
+}
+
+.training-info p {
+    margin-bottom: 0.5rem;
+}
+
+/* Main Interface */
+.main-interface {
+    display: grid;
+    grid-template-columns: 450px 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.control-panel {
+    background: rgba(218, 216, 202, 0.03);
+    border: 1px solid rgba(218, 216, 202, 0.1);
+    border-radius: 8px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.panel-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(218, 216, 202, 0.1);
+}
+
+.panel-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.panel-section h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #DAD8CA;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.1em;
+}
+
+.parameter-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.param-input {
+    position: relative;
+}
+
+.param-input label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(218, 216, 202, 0.8);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+}
+
+.param-input input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(218, 216, 202, 0.3);
+    color: #DAD8CA;
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.8rem 0;
+    transition: border-color 0.3s ease;
+}
+
+.param-input input:focus {
+    outline: none;
+    border-bottom-color: #DAD8CA;
+}
+
+.input-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #DAD8CA;
+    transition: width 0.3s ease;
+}
+
+.param-input input:focus + .input-line {
+    width: 100%;
+}
+
+.config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.config-item label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: rgba(218, 216, 202, 0.8);
+    margin-bottom: 0.5rem;
+}
+
+.config-item input {
+    width: 100%;
+    background: rgba(218, 216, 202, 0.05);
+    border: 1px solid rgba(218, 216, 202, 0.2);
+    border-radius: 4px;
+    color: #DAD8CA;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    padding: 0.6rem;
+}
+
+.execute-btn {
+    position: relative;
+    width: 100%;
+    background: linear-gradient(45deg, #DAD8CA, #f0f0f0);
+    color: #1a1a2e;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.execute-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(218, 216, 202, 0.3);
+}
+
+.execute-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #4CAF50;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.execute-btn:hover .btn-line {
+    transform: translateX(0);
+}
+
+.status-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.status-value {
+    font-weight: 700;
+    color: #4CAF50;
+}
+
+/* Formula Display */
+.formula-display {
+    background: rgba(14, 8, 19, 0.8);
+    padding: 1rem;
+    border-radius: 4px;
+    border-left: 3px solid #2196F3;
+}
+
+.formula-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #DAD8CA;
+    margin-bottom: 0.5rem;
+}
+
+.formula-math {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #DAD8CA;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.formula-desc {
+    font-size: 0.75rem;
+    color: rgba(218, 216, 202, 0.7);
+    font-style: italic;
+}
+
+/* Display Panel */
+.display-panel {
+    display: grid;
+    gap: 2rem;
+}
+
+.pricing-display,
+.greeks-display {
+    background: rgba(218, 216, 202, 0.03);
+    border: 1px solid rgba(218, 216, 202, 0.1);
+    border-radius: 8px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.pricing-display h3,
+.greeks-display h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #DAD8CA;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.1em;
+}
+
+.price-matrix {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.price-block {
+    background: rgba(218, 216,

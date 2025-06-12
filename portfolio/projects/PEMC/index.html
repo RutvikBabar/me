@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEMC vs Monte Carlo - Rutvik Babar</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="geometric-bg" id="geometricBg"></div>
+    
+    <div class="container">
+        <nav class="project-nav">
+            <a href="../../index.html" class="back-btn">← Back to Portfolio</a>
+            <div class="project-title-nav">
+                <h1>PEMC vs Monte Carlo</h1>
+                <div class="devanagari-subtitle">पीईएमसी बनाम मॉन्टे कार्लो</div>
+            </div>
+        </nav>
+
+        <div class="comparison-header">
+            <div class="header-grid">
+                <div class="method-block traditional">
+                    <div class="method-number">01</div>
+                    <div class="method-title">TRADITIONAL MONTE CARLO</div>
+                    <div class="method-desc">Reliable but computationally expensive</div>
+                </div>
+                <div class="vs-divider">VS</div>
+                <div class="method-block pemc">
+                    <div class="method-number">02</div>
+                    <div class="method-title">PREDICTION-ENHANCED MC</div>
+                    <div class="method-desc">ML-enhanced with 30-55% variance reduction</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-interface">
+            <div class="control-panel">
+                <div class="panel-section">
+                    <h3>ASIAN OPTION PARAMETERS</h3>
+                    <div class="parameter-grid">
+                        <div class="param-input">
+                            <label>SPOT PRICE (S)</label>
+                            <input type="number" id="spotPrice" value="100" step="0.01">
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="param-input">
+                            <label>STRIKE PRICE (K)</label>
+                            <input type="number" id="strikePrice" value="105" step="0.01">
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="param-input">
+                            <label>TIME TO EXPIRY (Years)</label>
+                            <input type="number" id="timeToExpiry" value="0.25" step="0.01">
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="param-input">
+                            <label>RISK-FREE RATE (%)</label>
+                            <input type="number" id="riskFreeRate" value="5" step="0.01">
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="param-input">
+                            <label>VOLATILITY (%)</label>
+                            <input type="number" id="volatility" value="20" step="0.01">
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>SIMULATION PARAMETERS</h3>
+                    <div class="config-grid">
+                        <div class="config-item">
+                            <label>MONTE CARLO SAMPLES</label>
+                            <input type="number" id="mcSamples" value="10000" min="1000" max="100000">
+                        </div>
+                        <div class="config-item">
+                            <label>PEMC EXPENSIVE (n)</label>
+                            <input type="number" id="pemcExpensive" value="1000" min="100" max="5000">
+                        </div>
+                        <div class="config-item">
+                            <label>PEMC CHEAP (N)</label>
+                            <input type="number" id="pemcCheap" value="10000" min="1000" max="50000">
+                        </div>
+                    </div>
+                    <button id="runComparison" class="execute-btn">
+                        <span>RUN COMPARISON</span>
+                        <div class="btn-line"></div>
+                    </button>
+                </div>
+
+                <div class="panel-section">
+                    <h3>RESEARCH PAPER</h3>
+                    <div class="paper-download">
+                        <div class="paper-info">
+                            <div class="paper-title">Prediction-Enhanced Monte Carlo</div>
+                            <div class="paper-subtitle">A Machine Learning View on Control Variate</div>
+                            <div class="paper-authors">Li et al. (2024)</div>
+                            <div class="paper-journal">arXiv:2412.11257v3</div>
+                            <div class="paper-stats">
+                                <span class="stat-item">30-55% RMSE Reduction</span>
+                                <span class="stat-item">Production-Grade</span>
+                            </div>
+                        </div>
+                        <a href="2412.11257v3.pdf" download="PEMC_Li_et_al_2024.pdf" class="download-btn">
+                            <div class="download-content">
+                                <span class="download-text">DOWNLOAD PAPER</span>
+                                <div class="download-icon">↓</div>
+                            </div>
+                            <div class="download-progress"></div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>PEMC FORMULA</h3>
+                    <div class="formula-display">
+                        <div class="formula-title">PEMC Estimator:</div>
+                        <div class="formula-math">
+                            PEMC = (1/n)Σ[f(Y<sub>i</sub>) - g(X<sub>i</sub>)] + (1/N)Σ[g(X̃<sub>j</sub>)]
+                        </div>
+                        <div class="formula-desc">
+                            Unbiased estimation with proven variance reduction
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-panel">
+                <div class="comparison-results">
+                    <h3>PRICING COMPARISON</h3>
+                    <div class="results-grid">
+                        <div class="result-block mc-block">
+                            <div class="result-header">
+                                <div class="method-icon">MC</div>
+                                <div class="method-name">Monte Carlo</div>
+                            </div>
+                            <div class="result-price" id="mcPrice">$1.8542</div>
+                            <div class="result-metrics">
+                                <div class="metric">
+                                    <span>Standard Error:</span>
+                                    <span id="mcStdError">±0.0156</span>
+                                </div>
+                                <div class="metric">
+                                    <span>Samples Used:</span>
+                                    <span id="mcSamplesUsed">10,000</span>
+                                </div>
+                                <div class="metric">
+                                    <span>Computation Time:</span>
+                                    <span id="mcTime">2.34s</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-block pemc-block">
+                            <div class="result-header">
+                                <div class="method-icon">PEMC</div>
+                                <div class="method-name">Enhanced MC</div>
+                            </div>
+                            <div class="result-price" id="pemcPrice">$1.8567</div>
+                            <div class="result-metrics">
+                                <div class="metric">
+                                    <span>Standard Error:</span>
+                                    <span id="pemcStdError">±0.0089</span>
+                                </div>
+                                <div class="metric">
+                                    <span>Total Samples:</span>
+                                    <span id="pemcSamplesUsed">11,000</span>
+                                </div>
+                                <div class="metric">
+                                    <span>Computation Time:</span>
+                                    <span id="pemcTime">1.67s</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="performance-analysis">
+                    <h3>PERFORMANCE METRICS</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-card variance">
+                            <div class="metric-icon">VAR</div>
+                            <div class="metric-content">
+                                <div class="metric-label">VARIANCE REDUCTION</div>
+                                <div class="metric-value" id="varianceReduction">43.2%</div>
+                                <div class="metric-desc">PEMC vs Standard MC</div>
+                            </div>
+                        </div>
+                        <div class="metric-card efficiency">
+                            <div class="metric-icon">SPEED</div>
+                            <div class="metric-content">
+                                <div class="metric-label">EFFICIENCY GAIN</div>
+                                <div class="metric-value" id="efficiencyGain">2.1x</div>
+                                <div class="metric-desc">Speed Improvement</div>
+                            </div>
+                        </div>
+                        <div class="metric-card accuracy">
+                            <div class="metric-icon">CORR</div>
+                            <div class="metric-content">
+                                <div class="metric-label">ML CORRELATION</div>
+                                <div class="metric-value" id="mlCorrelation">0.73</div>
+                                <div class="metric-desc">Prediction Quality</div>
+                            </div>
+                        </div>
+                        <div class="metric-card cost">
+                            <div class="metric-icon">COST</div>
+                            <div class="metric-content">
+                                <div class="metric-label">COST RATIO</div>
+                                <div class="metric-value" id="costRatio">0.001</div>
+                                <div class="metric-desc">Cheap vs Expensive</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="visualization-section">
+            <div class="chart-panel">
+                <h3>CONVERGENCE ANALYSIS</h3>
+                <div class="chart-tabs">
+                    <button class="tab-btn active" onclick="showChart('convergence')">Convergence Rate</button>
+                    <button class="tab-btn" onclick="showChart('variance')">Variance Reduction</button>
+                    <button class="tab-btn" onclick="showChart('efficiency')">Computational Efficiency</button>
+                </div>
+                <canvas id="comparisonChart"></canvas>
+            </div>
+            
+            <div class="insights-panel">
+                <h3>KEY INSIGHTS</h3>
+                <div class="insight-cards">
+                    <div class="insight-card">
+                        <div class="insight-number">01</div>
+                        <div class="insight-content">
+                            <h4>Variance Reduction</h4>
+                            <p>PEMC achieves 30-55% variance reduction by using ML predictions as control variates, maintaining unbiasedness while improving efficiency.</p>
+                        </div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-content">
+                            <div class="insight-number">02</div>
+                            <h4>Computational Efficiency</h4>
+                            <p>By leveraging cheap ML evaluations (N=10,000) with fewer expensive simulations (n=1,000), PEMC optimizes the cost-variance tradeoff.</p>
+                        </div>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-content">
+                            <div class="insight-number">03</div>
+                            <h4>Statistical Rigor</h4>
+                            <p>Unlike pure ML approaches, PEMC preserves Monte Carlo's unbiasedness and provides rigorous confidence intervals for risk management.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

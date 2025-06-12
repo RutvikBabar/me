@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEMC Options Pricing System - Rutvik Babar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="matrix-bg" id="matrixBg"></div>
+    
+    <div class="container">
+        <header class="system-header">
+            <div class="header-grid">
+                <div class="system-id">
+                    <span class="system-number">166</span>
+                    <span class="system-code">005</span>
+                </div>
+                <div class="project-title">
+                    <h1>PEMC</h1>
+                    <div class="subtitle">PREDICTION-ENHANCED MONTE CARLO</div>
+                    <div class="devanagari">पीईएमसी विकल्प मूल्य निर्धारण</div>
+                </div>
+                <div class="system-status">
+                    <div class="status-indicator" id="statusIndicator"></div>
+                    <span id="systemStatus">INITIALIZING</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="training-section" id="trainingSection">
+            <div class="training-panel">
+                <h3>MODEL TRAINING STATUS</h3>
+                <div class="training-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Initializing...</div>
+                </div>
+                <div class="training-info">
+                    <p>Training PEMC neural network predictor on 30,000 samples...</p>
+                    <p>This implements the exact methodology from Li et al. (2024)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-interface" id="mainInterface" style="display: none;">
+            <div class="control-panel">
+                <div class="panel-section">
+                    <h3>MARKET PARAMETERS</h3>
+                    <div class="parameter-grid">
+                        <div class="param-input">
+                            <label>SPOT PRICE (S)</label>
+                            <input type="number" id="spotPrice" value="100" step="0.01">
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="param-input">
+                            <label>STRIKE PRICE (K)</label>
+                            <input type="number" id="strikePrice" value="105" step="0.01">
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="param-input">
+                            <label>TIME TO EXPIRY (Years)</label>
+                            <input type="number" id="timeToExpiry" value="0.25" step="0.01">
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="param-input">
+                            <label>RISK-FREE RATE (%)</label>
+                            <input type="number" id="riskFreeRate" value="5" step="0.01">
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="param-input">
+                            <label>VOLATILITY (%)</label>
+                            <input type="number" id="volatility" value="20" step="0.01">
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>PEMC CONFIGURATION</h3>
+                    <div class="config-grid">
+                        <div class="config-item">
+                            <label>EXPENSIVE SAMPLES (n)</label>
+                            <input type="number" id="nExpensive" value="1000" min="100" max="5000">
+                        </div>
+                        <div class="config-item">
+                            <label>CHEAP SAMPLES (N)</label>
+                            <input type="number" id="nCheap" value="10000" min="1000" max="50000">
+                        </div>
+                    </div>
+                    <button id="runPEMC" class="execute-btn">
+                        <span>EXECUTE PEMC</span>
+                        <div class="btn-line"></div>
+                    </button>
+                </div>
+
+                <div class="panel-section">
+                    <h3>SYSTEM METRICS</h3>
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <span>VARIANCE REDUCTION</span>
+                            <span id="varianceReduction" class="status-value">--</span>
+                        </div>
+                        <div class="status-item">
+                            <span>ML CONFIDENCE</span>
+                            <span id="mlConfidence" class="status-value">--</span>
+                        </div>
+                        <div class="status-item">
+                            <span>CORRELATION (ρ)</span>
+                            <span id="correlation" class="status-value">--</span>
+                        </div>
+                        <div class="status-item">
+                            <span>COST RATIO (c)</span>
+                            <span id="costRatio" class="status-value">0.001</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>PEMC FORMULA</h3>
+                    <div class="formula-display">
+                        <div class="formula-title">PEMC Estimator:</div>
+                        <div class="formula-math">
+                            PEMC = (1/n)Σ[f(Y<sub>i</sub>) - g(X<sub>i</sub>)] + (1/N)Σ[g(X̃<sub>j</sub>)]
+                        </div>
+                        <div class="formula-desc">
+                            Unbiased estimation with proven variance reduction
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="display-panel">
+                <div class="pricing-display">
+                    <h3>ASIAN OPTION VALUATIONS</h3>
+                    <div class="price-matrix">
+                        <div class="price-block traditional-block">
+                            <div class="price-header">BLACK-SCHOLES</div>
+                            <div class="price-value" id="traditionalPrice">$--</div>
+                            <div class="price-details">
+                                <span>ANALYTICAL SOLUTION</span>
+                                <span>INTRINSIC: <span id="intrinsicValue">$--</span></span>
+                                <span>TIME VALUE: <span id="timeValue">$--</span></span>
+                            </div>
+                        </div>
+                        <div class="price-block pemc-block">
+                            <div class="price-header">PEMC ENHANCED</div>
+                            <div class="price-value" id="pemcPrice">$--</div>
+                            <div class="price-details">
+                                <span>TRADITIONAL MC: <span id="traditionalMC">$--</span></span>
+                                <span>PEMC ESTIMATE: <span id="pemcEstimate">$--</span></span>
+                                <span>95% CI: <span id="confidenceInterval">$-- - $--</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="greeks-display">
+                    <h3>OPTION GREEKS</h3>
+                    <div class="greeks-matrix">
+                        <div class="greek-item">
+                            <span class="greek-symbol">Δ</span>
+                            <span class="greek-name">DELTA</span>
+                            <div class="greek-values">
+                                <span>CALL: <span id="callDelta">--</span></span>
+                                <span>PUT: <span id="putDelta">--</span></span>
+                            </div>
+                        </div>
+                        <div class="greek-item">
+                            <span class="greek-symbol">Γ</span>
+                            <span class="greek-name">GAMMA</span>
+                            <div class="greek-values">
+                                <span>BOTH: <span id="gamma">--</span></span>
+                            </div>
+                        </div>
+                        <div class="greek-item">
+                            <span class="greek-symbol">Θ</span>
+                            <span class="greek-name">THETA</span>
+                            <div class="greek-values">
+                                <span>CALL: <span id="callTheta">--</span></span>
+                                <span>PUT: <span id="putTheta">--</span></span>
+                            </div>
+                        </div>
+                        <div class="greek-item">
+                            <span class="greek-symbol">ν</span>
+                            <span class="greek-name">VEGA</span>
+                            <div class="greek-values">
+                                <span>BOTH: <span id="vega">--</span></span>
+                            </div>
+                        </div>
+                        <div class="greek-item">
+                            <span class="greek-symbol">ρ</span>
+                            <span class="greek-name">RHO</span>
+                            <div class="greek-values">
+                                <span>CALL: <span id="callRho">--</span></span>
+                                <span>PUT: <span id="putRho">--</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analytics-section" id="analyticsSection" style="display: none;">
+            <div class="chart-panel">
+                <h3>PEMC PERFORMANCE ANALYSIS</h3>
+                <div class="chart-tabs">
+                    <button class="tab-btn active" onclick="showChart('variance')">Variance Reduction</button>
+                    <button class="tab-btn" onclick="showChart('sensitivity')">Sensitivity Analysis</button>
+                </div>
+                <canvas id="performanceChart"></canvas>
+            </div>
+            
+            <div class="metrics-panel">
+                <h3>RESEARCH FOUNDATION</h3>
+                <div class="research-info">
+                    <div class="paper-ref">
+                        <strong>Li et al. (2024)</strong><br>
+                        "Prediction-Enhanced Monte Carlo: A Machine Learning View on Control Variate"<br>
+                        <em>arXiv:2412.11257v3</em>
+                    </div>
+                    <div class="key-results">
+                        <div class="result-item">✓ 30-55% RMSE reduction vs standard MC</div>
+                        <div class="result-item">✓ Unbiased estimation with rigorous confidence intervals</div>
+                        <div class="result-item">✓ Production implementation at Morgan Stanley</div>
+                        <div class="result-item">✓ Asian options under GBM model</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

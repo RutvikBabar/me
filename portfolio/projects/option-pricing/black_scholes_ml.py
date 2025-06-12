@@ -3,13 +3,13 @@ import json
 from typing import Dict, List, Tuple
 
 class BlackScholesModel:
-    def __init__(self, S, K, T, r, sigma, q=0):
+    def __init__(self, S, K, T, r, sigma):
         self.S = S  # Spot price
         self.K = K  # Strike price
         self.T = T  # Time to maturity in years
         self.r = r  # Risk-free interest rate
         self.sigma = sigma  # Volatility
-        self.q = q  # Dividend yield
+        # Removed dividend yield (q)
 
     def _N(self, x):
         """Cumulative distribution function for the standard normal distribution"""
@@ -20,7 +20,7 @@ class BlackScholesModel:
         return (1 / math.sqrt(2 * math.pi)) * math.exp(-0.5 * x * x)
 
     def d1(self):
-        return (math.log(self.S / self.K) + (self.r - self.q + 0.5 * self.sigma * self.sigma) * self.T) / (self.sigma * math.sqrt(self.T))
+        return (math.log(self.S / self.K) + (self.r + 0.5 * self.sigma * self.sigma) * self.T) / (self.sigma * math.sqrt(self.T))
 
     def d2(self):
         return self.d1() - self.sigma * math.sqrt(self.T)
@@ -28,40 +28,40 @@ class BlackScholesModel:
     def call_price(self):
         d1 = self.d1()
         d2 = self.d2()
-        return self.S * math.exp(-self.q * self.T) * self._N(d1) - self.K * math.exp(-self.r * self.T) * self._N(d2)
+        return self.S * self._N(d1) - self.K * math.exp(-self.r * self.T) * self._N(d2)
 
     def put_price(self):
         d1 = self.d1()
         d2 = self.d2()
-        return self.K * math.exp(-self.r * self.T) * self._N(-d2) - self.S * math.exp(-self.q * self.T) * self._N(-d1)
+        return self.K * math.exp(-self.r * self.T) * self._N(-d2) - self.S * self._N(-d1)
 
     def delta(self):
         d1 = self.d1()
-        call_delta = math.exp(-self.q * self.T) * self._N(d1)
-        put_delta = call_delta - math.exp(-self.q * self.T)
+        call_delta = self._N(d1)
+        put_delta = call_delta - 1
         return call_delta, put_delta
 
     def gamma(self):
         d1 = self.d1()
         pdf = self._pdf(d1)
-        return math.exp(-self.q * self.T) * pdf / (self.S * self.sigma * math.sqrt(self.T))
+        # Without dividend yield, no exponential term needed
+        return pdf / (self.S * self.sigma * math.sqrt(self.T))
+
 
     def theta(self):
         d1 = self.d1()
         d2 = self.d2()
         pdf = self._pdf(d1)
-        call_theta = (-self.S * pdf * self.sigma * math.exp(-self.q * self.T) / (2 * math.sqrt(self.T))
-                      - self.r * self.K * math.exp(-self.r * self.T) * self._N(d2)
-                      + self.q * self.S * math.exp(-self.q * self.T) * self._N(d1)) / 365
-        put_theta = (-self.S * pdf * self.sigma * math.exp(-self.q * self.T) / (2 * math.sqrt(self.T))
-                     + self.r * self.K * math.exp(-self.r * self.T) * self._N(-d2)
-                     - self.q * self.S * math.exp(-self.q * self.T) * self._N(-d1)) / 365
+        call_theta = (-self.S * pdf * self.sigma / (2 * math.sqrt(self.T))
+                      - self.r * self.K * math.exp(-self.r * self.T) * self._N(d2)) / 365
+        put_theta = (-self.S * pdf * self.sigma / (2 * math.sqrt(self.T))
+                     + self.r * self.K * math.exp(-self.r * self.T) * self._N(-d2)) / 365
         return call_theta, put_theta
 
     def vega(self):
         d1 = self.d1()
         pdf = self._pdf(d1)
-        return self.S * math.exp(-self.q * self.T) * pdf * math.sqrt(self.T) / 100
+        return self.S * pdf * math.sqrt(self.T) / 100
 
     def rho(self):
         d2 = self.d2()
@@ -117,7 +117,7 @@ class BlackScholesModel:
         """Perform sensitivity analysis on a specific parameter"""
         base_value = getattr(self, parameter)
         
-        if parameter in ['r', 'sigma', 'q']:
+        if parameter in ['r', 'sigma']:
             param_range = [max(0.001, base_value * (1 + i * range_pct / points)) for i in range(-points//2, points//2 + 1)]
         else:
             param_range = [base_value * (1 + i * range_pct / points) for i in range(-points//2, points//2 + 1)]
@@ -136,7 +136,7 @@ class BlackScholesModel:
             # Create temporary model with modified parameter
             temp_params = {
                 'S': self.S, 'K': self.K, 'T': self.T, 
-                'r': self.r, 'sigma': self.sigma, 'q': self.q
+                'r': self.r, 'sigma': self.sigma
             }
             temp_params[parameter] = value
             
@@ -153,64 +153,68 @@ class BlackScholesModel:
         
         return results
 
-class OptionsPortfolioAnalyzer:
-    """Advanced analysis tools for options portfolio"""
+# Example usage
+if __name__ == '__main__':
+    # Example calculation
+    S = 100  # Current stock price
+    K = 105  # Strike price
+    T = 0.25  # Time to expiration (3 months)
+    r = 0.05  # Risk-free rate (5%)
+    sigma = 0.20  # Volatility (20%)
     
-    @staticmethod
-    def implied_volatility(market_price: float, S: float, K: float, T: float, r: float, 
-                          option_type: str = 'call', q: float = 0, precision: float = 0.0001) -> float:
-        """Calculate implied volatility using Newton-Raphson method"""
-        sigma = 0.2  # Initial guess
-        max_iterations = 100
-        
-        for i in range(max_iterations):
-            model = BlackScholesModel(S, K, T, r, sigma, q)
-            
-            if option_type.lower() == 'call':
-                price = model.call_price()
-            else:
-                price = model.put_price()
-            
-            vega = model.vega() * 100  # Convert back to percentage
-            
-            price_diff = price - market_price
-            
-            if abs(price_diff) < precision:
-                return sigma
-            
-            if vega == 0:
-                break
-                
-            sigma = sigma - price_diff / vega
-            
-            # Ensure sigma stays positive
-            sigma = max(0.001, sigma)
-        
-        return sigma
+    # Create Black-Scholes model
+    bs_model = BlackScholesModel(S, K, T, r, sigma)
+    
+    # Calculate option prices
+    print(f"Call Price: ${bs_model.call_price():.4f}")
+    print(f"Put Price: ${bs_model.put_price():.4f}")
+    
+    # Calculate Greeks
+    delta_call, delta_put = bs_model.delta()
+    print(f"Call Delta: {delta_call:.3f}")
+    print(f"Put Delta: {delta_put:.3f}")
 
-    @staticmethod
-    def monte_carlo_simulation(S: float, K: float, T: float, r: float, sigma: float, 
-                              q: float = 0, num_simulations: int = 10000) -> Dict:
-        """Monte Carlo simulation for option pricing"""
-        import random
+class MLEnhancedBlackScholes(BlackScholesModel):
+    def __init__(self, S, K, T, r, base_sigma):
+        super().__init__(S, K, T, r, base_sigma)
+        self.ml_volatility_predictor = self.load_volatility_model()
+        self.market_regime_detector = self.load_regime_model()
         
-        dt = T / 252  # Daily time step
-        call_payoffs = []
-        put_payoffs = []
+    def adaptive_volatility(self, market_features):
+        """Use ML to predict more accurate volatility"""
+        # Features: VIX, historical volatility, market sentiment, etc.
+        predicted_vol = self.ml_volatility_predictor.predict(market_features)
         
-        for _ in range(num_simulations):
-            St = S
-            for _ in range(int(T * 252)):
-                z = random.gauss(0, 1)
-                St = St * math.exp((r - q - 0.5 * sigma**2) * dt + sigma * math.sqrt(dt) * z)
-            
-            call_payoffs.append(max(St - K, 0))
-            put_payoffs.append(max(K - St, 0))
+        # Detect market regime (bull/bear/sideways)
+        regime = self.market_regime_detector.predict(market_features)
         
-        discount_factor = math.exp(-r * T)
+        # Adjust volatility based on regime
+        regime_adjustments = {'bull': 0.9, 'bear': 1.2, 'sideways': 1.0}
+        adjusted_vol = predicted_vol * regime_adjustments[regime]
+        
+        return adjusted_vol
+    
+    def ensemble_pricing(self, market_data):
+        """Combine multiple models for robust pricing"""
+        # Traditional Black-Scholes
+        bs_price = self.call_price()
+        
+        # ML-enhanced volatility
+        ml_vol = self.adaptive_volatility(market_data)
+        ml_model = BlackScholesModel(self.S, self.K, self.T, self.r, ml_vol)
+        ml_price = ml_model.call_price()
+        
+        # Monte Carlo with stochastic volatility
+        mc_price = self.stochastic_vol_monte_carlo()
+        
+        # Weighted ensemble
+        weights = [0.3, 0.5, 0.2]  # BS, ML, MC
+        final_price = sum(w * p for w, p in zip(weights, [bs_price, ml_price, mc_price]))
         
         return {
-            'call_price': discount_factor * sum(call_payoffs) / num_simulations,
-            'put_price': discount_factor * sum(put_payoffs) / num_simulations,
-            'final_prices': [S * math.exp((r - q - 0.5 * sigma**2) * T + sigma * math.sqrt(T) * random.gauss(0, 1)) for _ in range(100)]
+            'ensemble_price': final_price,
+            'traditional_bs': bs_price,
+            'ml_enhanced': ml_price,
+            'monte_carlo': mc_price,
+            'confidence_interval': self.calculate_prediction_interval()
         }
