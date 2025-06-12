@@ -4,80 +4,385 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rutvik Babar - Quantitative Developer</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="capybara.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="capybara.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="capybara.png">
+    <link rel="shortcut icon" href="capybara.png">
+    
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="geometric-bg" id="geometricBg"></div>
-    <div class="slanted-lines"></div>
+    
+    <!-- Vertical Breadcrumb Navigation -->
+    <nav class="vertical-breadcrumb" aria-label="Section Navigation">
+        <div class="breadcrumb-header">
+            <div class="breadcrumb-title">SECTIONS</div>
+            <div class="breadcrumb-indicator"></div>
+        </div>
+        <ul class="breadcrumb-list">
+            <li class="breadcrumb-item active" data-section="header">
+                <a href="#header" class="breadcrumb-link">
+                    <span class="breadcrumb-number">01</span>
+                    <span class="breadcrumb-text">HEADER</span>
+                </a>
+            </li>
+            <li class="breadcrumb-item" data-section="projects">
+                <a href="#projects" class="breadcrumb-link">
+                    <span class="breadcrumb-number">02</span>
+                    <span class="breadcrumb-text">PROJECTS</span>
+                </a>
+            </li>
+            <li class="breadcrumb-item" data-section="resume">
+                <a href="#resume" class="breadcrumb-link">
+                    <span class="breadcrumb-number">03</span>
+                    <span class="breadcrumb-text">EXPERIENCE</span>
+                </a>
+            </li>
+            <li class="breadcrumb-item" data-section="skills">
+                <a href="#skills" class="breadcrumb-link">
+                    <span class="breadcrumb-number">04</span>
+                    <span class="breadcrumb-text">SKILLS</span>
+                </a>
+            </li>
+            <li class="breadcrumb-item" data-section="contact">
+                <a href="#contact" class="breadcrumb-link">
+                    <span class="breadcrumb-number">05</span>
+                    <span class="breadcrumb-text">CONTACT</span>
+                </a>
+            </li>
+        </ul>
+        <div class="breadcrumb-progress">
+            <div class="progress-line"></div>
+            <div class="progress-indicator"></div>
+        </div>
+    </nav>
     
     <div class="container">
         <!-- Header Section -->
-        <header class="header">
+        <header class="header" id="header">
             <div class="header-content">
                 <div class="header-title">
                     <h1>RUTVIK BABAR</h1>
                     <div class="devanagari-name">रुत्विक बाबर</div>
+                    <div class="title-subtitle">QUANTITATIVE DEVELOPER</div>
                 </div>
             </div>
         </header>
 
         <!-- Projects Grid -->
-        <main class="projects-section">
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-number">01</div>
-                    <div class="project-content">
-                        <h3>Options Pricing Model</h3>
-                        <p>Black-Scholes implementation with Greeks calculation and real-time market data.</p>
-                        <a href="projects/option-pricing/index.html" class="project-btn">VIEW PROJECT</a>
+        <main class="projects-section" id="projects">
+            <div class="projects-section-inner">
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-number">01</div>
+                        <div class="project-content">
+                            <h3>Options Pricing Model</h3>
+                            <p>Black-Scholes implementation with Greeks calculation and real-time market data.</p>
+                            <a href="projects/option-pricing/index.html" class="project-btn">VIEW PROJECT</a>
+                        </div>
                     </div>
-                </div>
 
-                <div class="project-card">
-                    <div class="project-number">02</div>
-                    <div class="project-content">
-                        <h3>Prediction Enhanced MonteCarlo</h3>
-                        <p>ML-enhanced Monte Carlo achieving 30-55% variance reduction</p>
-                        <a href="projects/PEMC/index.html" class="project-btn">VIEW PROJECT</a>
+                    <div class="project-card">
+                        <div class="project-number">02</div>
+                        <div class="project-content">
+                            <h3>Prediction Enhanced MonteCarlo</h3>
+                            <p>ML-enhanced Monte Carlo achieving 30-55% variance reduction</p>
+                            <a href="projects/pemc/index.html" class="project-btn">VIEW PROJECT</a>
+                        </div>
                     </div>
-                </div>
 
-                <div class="project-card">
-                    <div class="project-number">03</div>
-                    <div class="project-content">
-                        <h3>Risk Dashboard</h3>
-                        <p>Real-time portfolio risk analytics with VaR calculations and stress testing.</p>
-                        <a href="projects/risk-dashboard/" class="project-btn">VIEW PROJECT</a>
+                    <div class="project-card">
+                        <div class="project-number">03</div>
+                        <div class="project-content">
+                            <h3>Risk Dashboard</h3>
+                            <p>Real-time portfolio risk analytics with VaR calculations and stress testing.</p>
+                            <a href="projects/risk-dashboard/" class="project-btn">VIEW PROJECT</a>
+                        </div>
                     </div>
-                </div>
 
-                <div class="project-card">
-                    <div class="project-number">04</div>
-                    <div class="project-content">
-                        <h3>Algo Trading Bot</h3>
-                        <p>Automated trading system with machine learning signal generation.</p>
-                        <a href="projects/algo-trading/" class="project-btn">VIEW PROJECT</a>
+                    <div class="project-card">
+                        <div class="project-number">04</div>
+                        <div class="project-content">
+                            <h3>Algo Trading Bot</h3>
+                            <p>Automated trading system with machine learning signal generation.</p>
+                            <a href="projects/algo-trading/" class="project-btn">VIEW PROJECT</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
 
+        <!-- Resume Section -->
+        <section class="resume-section" id="resume">
+            <div class="section-header">
+                <h2>PROFESSIONAL JOURNEY</h2>
+                <div class="devanagari-subtitle">व्यावसायिक यात्रा</div>
+            </div>
+            
+            <div class="resume-content">
+                <!-- Timeline Section -->
+                <div class="timeline-section">
+                    <h3>CAREER TIMELINE</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024 - Present</div>
+                            <div class="timeline-content">
+                                <h4>Graduate Student</h4>
+                                <div class="timeline-location">Stevens Institute of Technology & WorldQuant University</div>
+                                <p>Pursuing dual masters in Computer Science and Financial Engineering, focusing on advanced quantitative methods, distributed systems, and derivative pricing models.</p>
+                                <div class="timeline-skills">
+                                    <span class="skill-tag">Stochastic Modeling</span>
+                                    <span class="skill-tag">Deep Learning in Finance</span>
+                                    <span class="skill-tag">Concurrent Programming</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">2022 - 2024</div>
+                            <div class="timeline-content">
+                                <h4>Finance Analyst / Product Manager</h4>
+                                <div class="timeline-location">UBS, Hyderabad</div>
+                                <p>Developed PnL models and automated reconciliation systems, saving 10 FTE and $700k in accounting losses. Built risk-theoretical PnL models with 90% accuracy.</p>
+                                <div class="timeline-achievements">
+                                    <div class="achievement">• Saved 100+ hours/month through automation</div>
+                                    <div class="achievement">• Reduced platform failures by 50% using TDD</div>
+                                    <div class="achievement">• Built timeseries analysis for Stock, Index, and Swaps</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">2022</div>
+                            <div class="timeline-content">
+                                <h4>Finance Intern</h4>
+                                <div class="timeline-location">UBS, Hyderabad</div>
+                                <p>Developed POC for timeseries analysis platform and fabricated framework for ICE Broker Quotes integration for Valuation Analysis.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">2018 - 2022</div>
+                            <div class="timeline-content">
+                                <h4>Bachelor of Technology</h4>
+                                <div class="timeline-location">Vishwakarma Institute of Technology, Pune</div>
+                                <p>Computer Science and Engineering with focus on Machine Learning, Blockchain, and Neural Networks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Passion Statement -->
+                <div class="passion-section">
+                    <h3>PASSION FOR QUANTITATIVE DEVELOPMENT</h3>
+                    <div class="passion-content">
+                        <div class="passion-block">
+                            <div class="passion-icon">SPEED</div>
+                            <div class="passion-text">
+                                <h4>Ultra-Low Latency Innovation</h4>
+                                <p>Architected C++ frameworks achieving 2-3 μs end-to-end execution for trading strategies. The intersection of mathematical precision and computational efficiency drives my passion for building systems that operate at the speed of thought.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="passion-block">
+                            <div class="passion-icon">MATH</div>
+                            <div class="passion-text">
+                                <h4>Mathematical Finance Mastery</h4>
+                                <p>From implementing PEMC algorithms achieving 30-55% variance reduction to developing statistical arbitrage strategies with 1.6 Sharpe ratio, I'm fascinated by translating complex mathematical models into profitable trading systems.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="passion-block">
+                            <div class="passion-icon">RESEARCH</div>
+                            <div class="passion-text">
+                                <h4>Research-Driven Development</h4>
+                                <p>Every line of code is backed by rigorous research. Whether implementing research papers like Li et al.'s PEMC framework or developing novel approaches to market making, I believe in evidence-based innovation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Projects Highlight -->
+                <div class="projects-highlight">
+                    <h3>SIGNATURE PROJECTS</h3>
+                    <div class="highlight-grid">
+                        <div class="highlight-item">
+                            <div class="highlight-number">01</div>
+                            <div class="highlight-content">
+                                <h4>C++ Ultra-Low Latency Framework</h4>
+                                <p>Engineered cache warming routines, compile-time executions, and lock-free data structures achieving 2-3 μs end-to-end z-score calculation and trade execution.</p>
+                                <div class="highlight-tech">C++20 • Lock-Free • Cache Optimization</div>
+                            </div>
+                        </div>
+                        
+                        <div class="highlight-item">
+                            <div class="highlight-number">02</div>
+                            <div class="highlight-content">
+                                <h4>Statistical Arbitrage HFT System</h4>
+                                <p>Researched cointegrated pairs across 20 sectors, generating 1.4% ROI on $5M simulated capital with 1.6 Sharpe ratio in backtesting framework.</p>
+                                <div class="highlight-tech">Statistical Analysis • Backtesting • Risk Management</div>
+                            </div>
+                        </div>
+                        
+                        <div class="highlight-item">
+                            <div class="highlight-number">03</div>
+                            <div class="highlight-content">
+                                <h4>High-Frequency Market Maker</h4>
+                                <p>Fabricated ultra-low latency (0.8-1.4 μs) market maker identifying and exploiting bid-ask spreads through simultaneous order book positioning.</p>
+                                <div class="highlight-tech">Order Book Analysis • Market Microstructure • HFT</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Matrix -->
+        <section class="skills-matrix" id="skills">
+            <h3>TECHNICAL EXPERTISE</h3>
+            <div class="skills-categories">
+                <div class="skill-category">
+                    <h4>Programming Languages</h4>
+                    <div class="skill-items">
+                        <span class="skill-item advanced">Python</span>
+                        <span class="skill-item advanced">C++20</span>
+                        <span class="skill-item intermediate">R</span>
+                        <span class="skill-item intermediate">SQL</span>
+                        <span class="skill-item beginner">PySpark</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Quantitative Finance</h4>
+                    <div class="skill-items">
+                        <span class="skill-item advanced">Derivative Pricing</span>
+                        <span class="skill-item advanced">Stochastic Methods</span>
+                        <span class="skill-item advanced">Risk Management</span>
+                        <span class="skill-item intermediate">Portfolio Optimization</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Machine Learning</h4>
+                    <div class="skill-items">
+                        <span class="skill-item advanced">Neural Networks</span>
+                        <span class="skill-item advanced">Time Series Analysis</span>
+                        <span class="skill-item intermediate">Deep Learning</span>
+                        <span class="skill-item intermediate">Statistical Modeling</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Footer -->
-        <footer class="footer">
+        <footer class="footer" id="contact">
             <div class="footer-content">
                 <div class="contact-info">
-                    <span>rutvik.babar@gmail.com</span>
-                    
+                    <span>rutvikbabar@gmail.com</span>
+                    <span>+1 (551) 376-8659</span>
                 </div>
                 <div class="social-links">
-                    <a href="https://github.com/RutvikBabar" target="_blank">GitHub</a>
-                    <a href="https://www.linkedin.com/in/rutvik-babar-040aa218b/" target="_blank">LinkedIn</a>
+                    <a href="https://github.com/rutvikbabar" target="_blank">GitHub</a>
+                    <a href="https://linkedin.com/in/rutvikbabar" target="_blank">LinkedIn</a>
                 </div>
             </div>
         </footer>
     </div>
 
     <script>
+        // Vertical Breadcrumb Navigation with Smooth Scrolling
+        class VerticalBreadcrumb {
+            constructor() {
+                this.breadcrumbItems = document.querySelectorAll('.breadcrumb-item');
+                this.progressIndicator = document.querySelector('.progress-indicator');
+                this.sections = [];
+                
+                this.init();
+            }
+            
+            init() {
+                // Get all sections with proper selectors
+                this.sections = [
+                    { id: 'header', element: document.querySelector('.header') },
+                    { id: 'projects', element: document.querySelector('.projects-section') },
+                    { id: 'resume', element: document.querySelector('.resume-section') },
+                    { id: 'skills', element: document.querySelector('.skills-matrix') },
+                    { id: 'contact', element: document.querySelector('.footer') }
+                ].filter(section => section.element);
+                
+                // Add click listeners for smooth scrolling
+                this.breadcrumbItems.forEach(item => {
+                    const link = item.querySelector('.breadcrumb-link');
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const sectionId = item.dataset.section;
+                        this.scrollToSection(sectionId);
+                        this.setActiveSection(item);
+                    });
+                });
+                
+                // Add scroll listener for active state tracking
+                window.addEventListener('scroll', () => {
+                    this.updateActiveSection();
+                });
+                
+                // Initial update
+                this.updateActiveSection();
+            }
+            
+            scrollToSection(sectionId) {
+                const section = this.sections.find(s => s.id === sectionId);
+                if (section && section.element) {
+                    const offsetTop = section.element.offsetTop - 80;
+                    
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+            
+            setActiveSection(activeItem) {
+                this.breadcrumbItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                activeItem.classList.add('active');
+                this.updateProgressIndicator(activeItem);
+            }
+            
+            updateActiveSection() {
+                const scrollPosition = window.scrollY + 200;
+                let activeSection = this.sections[0];
+                
+                this.sections.forEach(section => {
+                    if (section.element && section.element.offsetTop <= scrollPosition) {
+                        activeSection = section;
+                    }
+                });
+                
+                this.breadcrumbItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.section === activeSection.id) {
+                        item.classList.add('active');
+                        this.updateProgressIndicator(item);
+                    }
+                });
+            }
+            
+            updateProgressIndicator(activeItem) {
+                if (this.progressIndicator) {
+                    const itemIndex = Array.from(this.breadcrumbItems).indexOf(activeItem);
+                    const totalItems = this.breadcrumbItems.length;
+                    const progressPercentage = (itemIndex / (totalItems - 1)) * 100;
+                    
+                    this.progressIndicator.style.top = `${progressPercentage}%`;
+                }
+            }
+        }
+
         // Geometric background animation
         function createGeometricBackground() {
             const geometricBg = document.getElementById('geometricBg');
@@ -125,6 +430,7 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            new VerticalBreadcrumb();
             createGeometricBackground();
         });
     </script>
