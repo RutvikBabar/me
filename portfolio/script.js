@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     projectCards.forEach((card, index) => {
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-5px) scale(1.02)';
-            this.style.boxShadow = '0 15px 35px rgba(240, 240, 240, 0.1)';
+            this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.1)';
         });
         
         card.addEventListener('mouseleave', function() {
@@ -72,4 +72,66 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.5)';
         });
     });
+});
+
+// Add paper aging spots dynamically
+function addPaperAging() {
+    const container = document.querySelector('.container');
+    
+    // Create aging spots
+    for (let i = 0; i < 8; i++) {
+        const spot = document.createElement('div');
+        spot.style.position = 'absolute';
+        spot.style.width = `${10 + Math.random() * 20}px`;
+        spot.style.height = `${10 + Math.random() * 20}px`;
+        spot.style.background = `radial-gradient(circle, rgba(120, 119, 108, ${0.1 + Math.random() * 0.1}) 0%, transparent 70%)`;
+        spot.style.borderRadius = '50%';
+        spot.style.top = `${Math.random() * 100}%`;
+        spot.style.left = `${Math.random() * 100}%`;
+        spot.style.pointerEvents = 'none';
+        spot.style.zIndex = '2';
+        
+        container.appendChild(spot);
+    }
+}
+
+// Update geometric background for paper effect
+function createPaperGeometricBackground() {
+    const geometricBg = document.getElementById('geometricBg');
+    const elementCount = 25;
+    
+    for (let i = 0; i < elementCount; i++) {
+        const element = document.createElement('div');
+        element.style.position = 'absolute';
+        element.style.opacity = '0.1';
+        
+        const elementType = Math.random();
+        
+        if (elementType < 0.6) {
+            element.style.width = '6px';
+            element.style.height = '6px';
+            element.style.background = '#1a1a1a';
+            element.style.transform = 'rotate(45deg)';
+            element.style.borderRadius = '1px';
+        } else {
+            element.style.width = '30px';
+            element.style.height = '1px';
+            element.style.background = '#1a1a1a';
+            element.style.transform = `rotate(${Math.random() * 360}deg)`;
+        }
+        
+        element.style.left = Math.random() * 100 + '%';
+        element.style.top = Math.random() * 100 + '%';
+        element.style.animation = `float ${12 + Math.random() * 6}s ease-in-out infinite`;
+        element.style.animationDelay = Math.random() * 10 + 's';
+        
+        geometricBg.appendChild(element);
+    }
+}
+
+// Initialize paper effects
+document.addEventListener('DOMContentLoaded', () => {
+    addPaperAging();
+    createPaperGeometricBackground();
+    new VerticalBreadcrumb();
 });

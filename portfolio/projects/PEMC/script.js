@@ -392,3 +392,23 @@ document.head.appendChild(style);
 document.addEventListener('DOMContentLoaded', () => {
     new ComparisonSystem();
 });
+
+function downloadPaper() {
+    // Simulate paper download
+    const downloadBtn = document.querySelector('.download-btn');
+    const progressBar = document.querySelector('.download-progress');
+    
+    // Add loading state
+    downloadBtn.style.pointerEvents = 'none';
+    progressBar.style.width = '100%';
+    
+    // Simulate download delay
+    setTimeout(() => {
+        // Reset button state
+        downloadBtn.style.pointerEvents = 'auto';
+        progressBar.style.width = '0%';
+        
+        // You can replace this with actual paper download link
+        window.open('https://arxiv.org/pdf/2412.11257v3.pdf', '_blank');
+    }, 1500);
+}
